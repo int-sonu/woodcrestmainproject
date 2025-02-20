@@ -1,0 +1,28 @@
+<h1>My Earnings</h1>
+<div>
+    <h3>Total Earnings</h3>
+    <p><strong>Daily:</strong> {{ daily_earnings }}</p>
+    <p><strong>Weekly:</strong> {{ weekly_earnings }}</p>
+    <p><strong>Monthly:</strong> {{ monthly_earnings }}</p>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Status</th>
+            <th>Assigned At</th>
+            <th>Delivery Fee</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in delivery_agent_orders %}
+            <tr>
+                <td>{{ order.order.id }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.assigned_at }}</td>
+                <td>{{ order.delivery_fee }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

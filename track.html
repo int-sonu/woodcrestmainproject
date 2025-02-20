@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Track Your Delivery</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
+    <script>
+        function trackOrder() {
+            let orderId = document.getElementById("order_id").value;
+            let url = `/track/${orderId}/`;  // Django API endpoint
+
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert("Order not found!");
+                } else {
+                    // Update order status
+                    document.getElementById("status").innerText = data.status;
+                    document.getElementById("delivery_agent").innerText = data.delivery_agent || "Not Assigned";
+
+                    // Show delivery agent location on the map
+                    if (data.latitude && data.longitude) {
+                        let map = new google.maps.Map(document.getElementById("map"), {
+                            center: { lat: data.latitude, lng: data.longitude },
+                            zoom: 15
+                        });
+
+                        new google.maps.Marker({
+                            position: { lat: data.latitude, lng: data.longitude },
+                            map: map,
+                            title: "Delivery Agent Location"
+                        });
+                    }
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</head>
+<body>
+    <h2>Track Your Order</h2>
+    <input type="text" id="order_id" placeholder="Enter Order ID">
+    <button onclick="trackOrder()">Track</button>
+
+    <h3>Order Status: <span id="status">Not Available</span></h3>
+    <h3>Delivery Agent: <span id="delivery_agent">Not Assigned</span></h3>
+
+    <div id="map" style="height: 400px; width: 600px;"></div>
+</body>
+</html>

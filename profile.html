@@ -1,0 +1,66 @@
+{% load static %}
+
+{% include 'admin/sidebar.html' %}
+
+      
+
+    <div class="profile-container">
+        <h2>Profile Details</h2>
+        <div>
+            <p class="detail-label">Name:</p>
+            <p class="detail-value">{{ user.username }}</p>
+        </div>
+        <div>
+            <p class="detail-label">Email:</p>
+            <p class="detail-value">{{ user.email }}</p>
+        </div>
+        <!-- Add more details as needed -->
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript to display alert box if a message exists -->
+    <script>
+        {% if messages %}
+            {% for message in messages %}
+                alert("{{ message }}");
+            {% endfor %}
+        {% endif %}
+    </script>
+</body>
+</html>
+
+<style>
+    body {
+        background-color: #f7f9fc;
+    }
+    .profile-container {
+        max-width: 700px; /* Increased width */
+        margin: 50px auto;
+        background-color: #ffffff;
+        border: 1px solid #e3e6f0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-top: -620px;
+
+    }
+    .profile-container h2 {
+        color: #4e73df;
+        margin-top: 30px;
+        text-align: center;
+    }
+    .profile-container .detail-label {
+        color: #5a5c69;
+        font-weight: bold;
+    }
+    .profile-container .detail-value {
+        color: #333;
+        margin-bottom: 20px;
+    }
+</style>

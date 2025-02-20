@@ -1,0 +1,182 @@
+{% load static %}
+<!doctype html>
+<html ⚡>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <title>Delivery Panel</title>
+  <link rel="canonical" href="self.html">
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <style amp-custom>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      color: #333;
+    }
+    .header {
+      background-color: #007bff;
+      color: white;
+      height: 80px;
+      padding: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      height: 50px;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar {
+      background-color: #343a40;
+      height: 100vh;
+      padding: 20px;
+      position: fixed;
+      top: 80px;
+      width: 250px;
+      color: white;
+      box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar h4 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .sidebar a {
+      color: #f8f9fa;
+      text-decoration: none;
+      display: block;
+      padding: 12px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+    .sidebar a:hover {
+      background-color: #495057;
+    }
+    .content {
+      margin-left: 270px;
+      margin-top: 100px;
+      padding: 30px;
+    }
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      text-align: center;
+      padding: 20px;
+      transition: all 0.3s ease-in-out;
+    }
+    .card:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+    .card-header {
+      font-weight: bold;
+      color: white;
+      padding: 15px;
+      border-radius: 8px 8px 0 0;
+    }
+    .card-body {
+      padding: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+    .dropdown {
+      display: none;
+      position: absolute;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+      top: 40px;
+      right: 0;
+      min-width: 150px;
+      z-index: 1000;
+    }
+    .dropdown a {
+      display: block;
+      padding: 10px;
+      color: #333;
+      text-decoration: none;
+    }
+    .dropdown a:hover {
+      background-color: #f1f1f1;
+    }
+    .profile:hover .dropdown {
+      display: block;
+    }
+    .bg-warning { background-color: #f39c12; }
+    .bg-success { background-color: #28a745; }
+    .bg-danger { background-color: #dc3545; }
+    .bg-info { background-color: #17a2b8; }
+    .text-white { color: white; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="{% static 'img/home/log10.png' %}" alt="Logo" class="logo">
+    <div class="search-bar">
+      <input type="text" placeholder="Search...">
+    </div>
+    <div class="notification">
+      🔔 <span class="badge">3</span>
+    </div>
+    <div class="profile">
+      👤 Hello, {{ user.username }}!
+      <div class="dropdown">
+        <a href="{% url 'delivery_agent_details' user.deliveryagent.id %}" data-bs-toggle="modal"  data-bs-target="#profileModal"id="profileLink">👤 Profile</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger">🚪 Logout</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="sidebar">
+    <h4>🚚 Delivery Agent</h4>
+    <a href="{% url 'delivery_dashboard' %}" class="active">🏠 Dashboard</a>
+    <a href="{% url 'my_assigned_orders' %}">📦 Orders</a>
+    <a href="{% url 'delivery_stats' %}">🚛 Deliveries</a>
+    <a href="#">📊 Reports</a>
+    <a href="#">🔓 Logout</a>
+  </div>
+
+  <div class="content">
+    <div class="card-container">
+      <div class="card">
+        <div class="card-header bg-warning text-white">📦 Total Orders</div>
+        <div class="card-body">{{ total_orders }}</div>
+      </div>
+      <div class="card">
+        <div class="card-header bg-success text-white">✅ Delivered Orders</div>
+        <div class="card-body">{{ delivered_orders }}</div>
+      </div>
+      <div class="card">
+        <div class="card-header bg-info text-white">🚚 In Transit</div>
+        <div class="card-body">{{ in_transit_orders }}</div>
+      </div>
+      <div class="card">
+        <div class="card-header bg-danger text-white">❌ Failed/Returned</div>
+        <div class="card-body">{{ failed_orders }}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

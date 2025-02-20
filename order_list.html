@@ -1,0 +1,30 @@
+<table border="1">
+    <tr>
+        <th>Order ID</th>
+        <th>Place</th>
+        <th>District</th>
+        <th>Delivery Agent</th>
+        <th>Assign Agent</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.place }}</td>
+        <td>{{ order.district }}</td>
+        <td>{{ order.assigned_agent_name|default:"Not Assigned" }}</td>
+        <td>
+            <form method="post" action="{% url 'assign_agent_manually' order.id %}">
+                {% csrf_token %}
+                <select name="agent">
+                    {% for agent in agents %}
+                        <option value="{{ agent.id }}" {% if order.delivery_agent == agent %}selected{% endif %}>
+                            {{ agent.name }} ({{ agent.district }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Assign</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

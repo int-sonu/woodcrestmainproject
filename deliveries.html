@@ -1,0 +1,223 @@
+{% load static %}
+<!doctype html>
+<html ⚡>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Delivery Panel</title>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <style amp-custom>
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .card {
+        background-color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: center;
+        padding: 20px;
+        transition: all 0.3s ease-in-out;
+        margin-top:-10px;
+    }
+    
+    .card:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        transform: translateY(-5px);
+    }
+    
+    .card-header {
+        font-weight: bold;
+        color: white;
+        padding: 15px;
+        border-radius: 8px 8px 0 0;
+        font-size: 18px;
+    }
+    
+    .card-body {
+        padding: 20px;
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .bg-warning { background-color: #f39c12; }
+    .bg-success { background-color: #28a745; }
+    .bg-danger { background-color: #dc3545; }
+    .bg-info { background-color: #17a2b8; }
+    .bg-primary { background-color: #007bff; }
+    .bg-dark { background-color: #343a40; }
+    .text-white { color: white; }
+
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f6f9;
+        color: #333;
+      }
+      .header {
+        background-color: #007bff;
+        color: white;
+        height: 80px;
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .search-bar input {
+          width: 100%;
+          padding: 10px;
+          border: none;
+          border-radius: 6px;
+          font-size: 16px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+      .logo {
+        height: 50px;
+      }
+      .sidebar {
+        background-color: #343a40;
+        height: 100vh;
+        width: 250px;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        padding: 20px;
+        color: white;
+        box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.1);
+      }
+      .sidebar a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        padding: 12px;
+        border-radius: 6px;
+        transition: background 0.3s;
+      }
+      .sidebar a:hover, .sidebar a.active {
+        background-color: #007bff;
+        font-weight: bold;
+      }
+      .content {
+        margin-left: 270px;
+        margin-top: 100px;
+        padding: 30px;
+      }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+      .table th, .table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      .table th {
+        background-color: #007bff;
+        color: white;
+      }
+      .table tr:hover {
+        background-color: #f1f1f1;
+      }
+      .notification {
+        position: relative;
+        cursor: pointer;
+        font-size: 20px;
+      }
+      .notification .badge {
+        position: absolute;
+        top: -5px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        padding: 3px 6px;
+        font-size: 12px;
+      }
+      select {
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+      }
+      /* Status Color Styling */
+      .status-pending {
+        background-color: #f8d7da !important; /* Red */
+      }
+      .status-in-transit {
+        background-color: #fff3cd !important; /* Yellow */
+      }
+      .status-delivered {
+        background-color: #d4edda !important; /* Green */
+      }
+      /* Responsive Sidebar */
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: relative;
+        }
+        .content {
+          margin-left: 0;
+        }
+      }
+    </style>
+</head>
+<body>
+  <div class="header">
+    <img src="{% static 'img/home/log10.png' %}" alt="Logo" class="logo">
+    <div class="search-bar">
+      <input type="text" placeholder="Search...">
+    </div>
+    <div class="notification">
+      🔔 <span class="badge">3</span>
+    </div>
+    <div class="profile">👤 Hello, {{ user.username }}!</div>
+  </div>
+
+  <div class="sidebar">
+    <h4>🚚 Delivery Agent</h4>
+    <a href="{% url 'delivery_dashboard' %}" >🏠 Dashboard</a>
+    <a href="{% url 'my_assigned_orders' %}" >📦 Orders</a>
+    <a href="{% url 'delivery_stats' %}"class="active">🚛 Deliveries</a>
+    <a href="#">📊 Reports</a>
+    <a href="#">🔓 Logout</a>
+  </div>
+    
+  <div class="content">
+    <div class="card-container">
+        <div class="card">
+            <div class="card-header bg-warning text-white">📦 Total Deliveries</div>
+            <div class="card-body">{{ total_deliveries }}</div>
+        </div>
+        <div class="card">
+            <div class="card-header bg-danger text-white">❌ Cancelled</div>
+            <div class="card-body">{{ cancelled_deliveries }}</div>
+        </div>
+        <div class="card">
+            <div class="card-header bg-success text-white">💰 Refunded</div>
+            <div class="card-body">{{ refunded_deliveries }}</div>
+        </div>
+        <div class="card">
+            <div class="card-header bg-primary text-white">🚚 In Transit</div>
+            <div class="card-body">{{ in_transit_deliveries }}</div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
